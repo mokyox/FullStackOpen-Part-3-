@@ -1,73 +1,73 @@
 import express from "express";
-const app = express();
 import bodyParser from "body-parser";
-import generate from "@babel/generator";
+const app = express();
 
-app.use(bodyParser.json());
-
-let notes = [
+let persons = [
   {
-    id: 1,
-    content: "HTML is easy",
-    date: "2019-05-30T17:30:31.098Z",
-    important: true
+    name: "Arto Hellas",
+    number: "040-123456",
+    id: 1
   },
   {
-    id: 2,
-    content: "Browser can execute only Javascript",
-    date: "2019-05-30T18:39:34.091Z",
-    important: false
+    name: "Ada Lovelace",
+    number: "39-44-5323523",
+    id: 2
   },
   {
-    id: 3,
-    content: "GET and POST are the most important methods of HTTP protocol",
-    date: "2019-05-30T19:20:14.298Z",
-    important: true
+    name: "Dan Abramov",
+    number: "12-43-234345",
+    id: 3
+  },
+  {
+    name: "Mary Poppendieck",
+    number: "39-23-6423122",
+    id: 4
   }
 ];
 
+app.use(bodyParser.json());
+
+//post info to the server
+
 const generateId = () => {
-  const maxId = notes.length > 0 ? Math.max(...notes.map(n => n.id)) : 0;
+  const maxId =
+    persons.length > 0 ? Math.max(...persons.map(person => person.id)) : 0;
+
   return maxId + 1;
 };
 
-app.post("/notes", (request, response) => {
+app.post("/api/persons", (request, response) => {
   const body = request.body;
 
   if (!body.content) {
-    return response.status(400).json({ error: "Content missing" });
+    return response.status(400).json({
+      error: "content missing"
+    });
   }
 
-  const note = {
-    content: body.content,
-    important: body.important || false,
-    date: new Date(),
+  const person = {
+    name: body.content,
+    number: body.content,
     id: generateId()
   };
 
-  notes = notes.concat(note);
-  response.json(note);
+  persons = persons.concat(person);
+  response.json(person);
 });
 
-app.delete("/notes/:id", (request, response) => {
+app.get("/api/persons", (request, response) => {
+  response.json(persons);
+});
+
+app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
-  notes = notes.filter(note => note.id !== id);
-
-  response.status(204).end();
+  const person = persons.find(person => person.id === id);
+  person ? response.json(person) : response.status(404).end();
 });
 
-app.get("/notes/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const note = notes.find(note => note.id === id);
-  note ? response.json(note) : response.status(404).end();
-});
-
-app.get("/", (req, res) => {
-  res.send("<h1>Hello World!</h1>");
-});
-
-app.get("/notes", (req, res) => {
-  res.json(notes);
+app.get("/", (request, response) => {
+  response.send("<h1>Hi there, this is my express server.</h1>");
+  console.log(response);
 });
 
 const PORT = 3001;
