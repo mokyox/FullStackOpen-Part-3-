@@ -71,8 +71,15 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 app.get("/", (request, response) => {
-  response.send("<h1>Hi there, this is my express server.</h1>");
+  response.send("<h1>Hi there!</h1>");
   console.log(response);
+});
+
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  persons = persons.filter(person => person.id !== id);
+
+  response.status(204).end();
 });
 
 app.post("/info", (request, response) => {
