@@ -32,7 +32,12 @@ let info = {
 
 app.use(bodyParser.json());
 
-//post info to the server
+//root page
+
+app.get("/", (request, response) => {
+  response.send("<h1>Hi there!</h1>");
+  console.log(response);
+});
 
 const generateId = () => {
   const maxId =
@@ -41,9 +46,12 @@ const generateId = () => {
   return maxId + 1;
 };
 
+//persons page
+
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
+  //If there's no content
   if (!body.content) {
     return response.status(400).json({
       error: "content missing"
@@ -52,12 +60,14 @@ app.post("/api/persons", (request, response) => {
 
   const person = {
     name: body.content,
-    number: body.content,
-    id: generateId()
+    number: body.number,
+    id: Math.random(generateId())
   };
 
+  console.log(body);
+
   persons = persons.concat(person);
-  response.json(person);
+  response.json(body);
 });
 
 app.get("/api/persons", (request, response) => {
@@ -70,17 +80,14 @@ app.get("/api/persons/:id", (request, response) => {
   person ? response.json(person) : response.status(404).end();
 });
 
-app.get("/", (request, response) => {
-  response.send("<h1>Hi there!</h1>");
-  console.log(response);
-});
-
 app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
   persons = persons.filter(person => person.id !== id);
 
   response.status(204).end();
 });
+
+//info page
 
 app.post("/info", (request, response) => {
   response.json(info);
