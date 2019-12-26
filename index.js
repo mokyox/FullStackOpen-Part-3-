@@ -52,9 +52,19 @@ app.post("/api/persons", (request, response) => {
   const body = request.body;
 
   //If there's no content
-  if (!body.content) {
+  if (!body.content || !body.number) {
     return response.status(400).json({
       error: "content missing"
+    });
+  }
+
+  if (
+    persons.find(
+      person => person.name.toLowerCase() === body.content.toLowerCase()
+    )
+  ) {
+    return response.status(400).json({
+      error: "name must be unique"
     });
   }
 
