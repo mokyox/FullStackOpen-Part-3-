@@ -25,6 +25,11 @@ let persons = [
   }
 ];
 
+let info = {
+  data: `Phonebook has info for ${persons.length} people`,
+  date: new Date()
+};
+
 app.use(bodyParser.json());
 
 //post info to the server
@@ -68,6 +73,14 @@ app.get("/api/persons/:id", (request, response) => {
 app.get("/", (request, response) => {
   response.send("<h1>Hi there, this is my express server.</h1>");
   console.log(response);
+});
+
+app.post("/info", (request, response) => {
+  response.json(info);
+});
+
+app.get("/info", (request, response) => {
+  response.send(`<p>${info.data}</p><p>${info.date}</p>`);
 });
 
 const PORT = 3001;
