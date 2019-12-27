@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import morgan from "morgan";
 const app = express();
 
 let persons = [
@@ -30,7 +31,13 @@ let info = {
   date: new Date()
 };
 
+//bodyParser middleware
+
 app.use(bodyParser.json());
+
+//morgan middleware
+
+app.use(morgan("tiny"));
 
 //root page
 
