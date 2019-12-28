@@ -37,7 +37,15 @@ app.use(bodyParser.json());
 
 //morgan middleware
 
-app.use(morgan("tiny"));
+//Custom body token
+
+morgan.token("body", (request, response) => {
+  return JSON.stringify(request.body);
+});
+
+app.use(
+  morgan(":method :url :status :req[content-length] - :response-time ms :body")
+);
 
 //root page
 
