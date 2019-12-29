@@ -55,7 +55,7 @@ app.use(
 //root page
 
 app.get("/", (request, response) => {
-  response.send("<h1>Hi there!</h1>");
+  response.send("<h1>Hi there! This is the backend of my phonebook app.</h1>");
   console.log(response);
 });
 
