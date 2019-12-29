@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
+import cors from "cors";
 const app = express();
 
 let persons = [
@@ -30,6 +31,10 @@ let info = {
   data: `Phonebook has info for ${persons.length} people`,
   date: new Date()
 };
+
+//Cors middleware
+
+app.use(cors());
 
 //bodyParser middleware
 
