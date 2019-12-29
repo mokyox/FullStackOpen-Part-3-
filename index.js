@@ -32,6 +32,10 @@ let info = {
   date: new Date()
 };
 
+//Show static content using static middleware
+
+app.use(express.static("build"));
+
 //Cors middleware
 
 app.use(cors());
